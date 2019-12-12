@@ -421,6 +421,8 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-sabresd-hdcp.dtb \
 	imx6q-sabresd-ldo.dtb \
 	imx6q-sabresd-enetirq.dtb \
+	imx6q-icb.dtb \
+	imx6q-icb-ldo.dtb \
 	imx6q-sbc6x.dtb \
 	imx6q-tbs2910.dtb \
 	imx6q-ts4900.dtb \
