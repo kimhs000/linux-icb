@@ -312,6 +312,14 @@
 		spi-max-frequency = <20000000>;
 		reg = <0>;
 	};*/
+
+	ads8344@0 {
+		compatible = "ti,ads8344";
+		reg = <0>;
+		#io-channel-cells = <1>;
+		spi-max-frequency = <1500000>;
+
+	};
 };
 
 &fec {
