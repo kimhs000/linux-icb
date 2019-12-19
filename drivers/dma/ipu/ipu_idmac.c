@@ -92,6 +92,7 @@ static uint32_t bytes_per_pixel(enum pixel_fmt fmt)
 {
 	switch (fmt) {
 	case IPU_PIX_FMT_GENERIC:	/* generic data */
+	case IPU_PIX_FMT_GREY:
 	case IPU_PIX_FMT_RGB332:
 	case IPU_PIX_FMT_YUV420P:
 	case IPU_PIX_FMT_YUV422P:
