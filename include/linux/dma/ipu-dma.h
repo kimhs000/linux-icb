@@ -66,6 +66,7 @@ enum ipu_channel_status {
 enum pixel_fmt {
 	/* 1 byte */
 	IPU_PIX_FMT_GENERIC,
+	IPU_PIX_FMT_GREY,
 	IPU_PIX_FMT_RGB332,
 	IPU_PIX_FMT_YUV420P,
 	IPU_PIX_FMT_YUV422P,

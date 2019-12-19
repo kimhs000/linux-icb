@@ -283,6 +283,7 @@ static inline void _ipu_ch_param_init(struct ipu_soc *ipu, int ch,
 			 "IDMAC%d's EBA1 is not 8-byte aligned\n", ch);
 
 	switch (pixel_fmt) {
+	case IPU_PIX_FMT_GREY:
 	case IPU_PIX_FMT_GENERIC:
 		/*Represents 8-bit Generic data */
 		ipu_ch_param_set_field(&params, 0, 107, 3, 5);	/* bits/pixel */
@@ -740,6 +741,7 @@ static inline int __ipu_ch_offset_calc(uint32_t pixel_fmt,
 	uint32_t v_fix = 0;
 
 	switch (pixel_fmt) {
+	case IPU_PIX_FMT_GREY:
 	case IPU_PIX_FMT_GENERIC:
 	case IPU_PIX_FMT_GENERIC_16:
 	case IPU_PIX_FMT_GENERIC_32:

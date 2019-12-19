@@ -391,7 +391,8 @@ static inline int valid_mode(u32 palette)
 		(palette == V4L2_PIX_FMT_YUYV) ||
 		(palette == V4L2_PIX_FMT_YUV420) ||
 		(palette == V4L2_PIX_FMT_YVU420) ||
-		(palette == V4L2_PIX_FMT_NV12));
+		(palette == V4L2_PIX_FMT_NV12) ||
++		(palette == V4L2_PIX_FMT_GREY) );
 }
 
 /*!
@@ -914,6 +915,10 @@ static int mxc_v4l2_s_fmt(cam_data *cam, struct v4l2_format *f)
 			size = f->fmt.pix.width * f->fmt.pix.height * 3 / 2;
 			bytesperline = f->fmt.pix.width;
 			break;
+		case V4L2_PIX_FMT_GREY:
+			size = f->fmt.pix.width * f->fmt.pix.height;
+			bytesperline = f->fmt.pix.width;
+			break;
 		default:
 			break;
 		}
@@ -1365,6 +1370,8 @@ static int mxc_v4l2_s_param(cam_data *cam, struct v4l2_streamparm *parm)
 	csi_param.Hsync_pol = ifparm.u.bt656.nobt_hs_inv;
 	csi_param.ext_vsync = ifparm.u.bt656.bt_sync_correct;
 
+	pr_debug("vsync_pol(%d) hsync_pol(%d) ext_vsync(%d)\n", csi_param.Vsync_pol, csi_param.Hsync_pol, 		csi_param.ext_vsync);
+
 	/* if the capturemode changed, the size bounds will have changed. */
 	cam_fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 	vidioc_int_g_fmt_cap(cam->sensor, &cam_fmt);
@@ -1385,6 +1392,8 @@ static int mxc_v4l2_s_param(cam_data *cam, struct v4l2_streamparm *parm)
 		cam->crop_current.width = cam->crop_bounds.width;
 		cam->crop_current.height = cam->crop_bounds.height;
 	}
+
+	cam->v2f.fmt.pix.pixelformat=cam_fmt.fmt.pix.pixelformat;
 
 	/* This essentially loses the data at the left and bottom of the image
 	 * giving a digital zoom image, if crop_current is less than the full
@@ -1950,6 +1959,8 @@ static long mxc_v4l_do_ioctl(struct file *file,
 	 */
 	case VIDIOC_S_FMT: {
 		struct v4l2_format *sf = arg;
+		if(cam->v2f.fmt.pix.pixelformat==V4L2_PIX_FMT_GREY)
+                 sf->fmt.pix.pixelformat=cam->v2f.fmt.pix.pixelformat;
 		pr_debug("   case VIDIOC_S_FMT\n");
 		retval = mxc_v4l2_s_fmt(cam, sf);
 		break;

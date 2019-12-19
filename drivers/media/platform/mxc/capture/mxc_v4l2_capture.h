@@ -233,7 +233,8 @@ typedef struct _cam_data {
 } cam_data;
 
 struct sensor_data {
-	const struct ov5642_platform_data *platform_data;
+//	const struct ov5642_platform_data *platform_data;
+	const struct ircamera_platform_data *platform_data;
 	struct v4l2_int_device *v4l2_int_device;
 	struct i2c_client *i2c_client;
 	struct v4l2_pix_format pix;
