@@ -60,7 +60,8 @@ static int ioctl_g_chip_ident(struct v4l2_int_device *s, int *id)
 {
 	((struct v4l2_dbg_chip_ident *)id)->match.type =
 					V4L2_CHIP_MATCH_I2C_DRIVER;
-	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "ircamera");
+	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "hanhwa_ircamera");
+	((struct v4l2_dbg_chip_ident *)id)->ident = 0x55;
 
 	return 0;
 }
@@ -321,7 +322,7 @@ static struct v4l2_int_ioctl_desc ircamera_ioctl_desc[] = {
 	{vidioc_int_s_ctrl_num, (v4l2_int_ioctl_func*)ioctl_s_ctrl},
 	{vidioc_int_enum_framesizes_num, (v4l2_int_ioctl_func *)ioctl_enum_framesizes},
 	{vidioc_int_enum_frameintervals_num, (v4l2_int_ioctl_func *)ioctl_enum_frameintervals},
-//	{vidioc_int_g_chip_ident_num, (v4l2_int_ioctl_func *)ioctl_g_chip_ident},
+	{vidioc_int_g_chip_ident_num, (v4l2_int_ioctl_func *)ioctl_g_chip_ident},
 };
 
 

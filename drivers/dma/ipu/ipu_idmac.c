@@ -297,6 +297,7 @@ static void ipu_ch_param_set_size(union chan_param_mem *params,
 
 	switch (pixel_fmt) {
 	case IPU_PIX_FMT_GENERIC:
+	case IPU_PIX_FMT_GREY:
 		/*Represents 8-bit Generic data */
 		params->pp.bpp	= 3;
 		params->pp.pfs	= 7;
