@@ -1,3 +1,5 @@
+#define DEBUG
+
 #include <linux/slab.h>
 #include <linux/ctype.h>
 #include <linux/types.h>
@@ -61,7 +63,6 @@ static int ioctl_g_chip_ident(struct v4l2_int_device *s, int *id)
 	((struct v4l2_dbg_chip_ident *)id)->match.type =
 					V4L2_CHIP_MATCH_I2C_DRIVER;
 	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "hanhwa_ircamera");
-	((struct v4l2_dbg_chip_ident *)id)->ident = 0x55;
 
 	return 0;
 }
@@ -407,7 +408,7 @@ static int ircamera_probe(struct i2c_client *client,
 
 	clk_disable_unprepare(ircamera_data.sensor_clk);
 
-	pr_info("camera ircamera driver is loaded\n");
+	pr_info("[KHS] camera ircamera driver is loaded\n");
 
 	return retval;
 }
@@ -445,4 +446,5 @@ module_exit(ircamera_clean);
 MODULE_AUTHOR("Naimtechnology");
 MODULE_DESCRIPTION("HanHwa IR Camera driver");
 MODULE_LICENSE("GPL");
-
+MODULE_VERSION("1.0");
+MODULE_ALIAS("CSI");

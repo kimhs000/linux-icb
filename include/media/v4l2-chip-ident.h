@@ -176,6 +176,9 @@ enum {
 	/* module adv7180: just ident 7180 */
 	V4L2_IDENT_ADV7180 = 7180,
 
+	/* module hanhwa_ircamera: just ident 7181 */
+	V4L2_IDENT_IRCAMERA = 7181,
+
 	/* module adv7183: just ident 7183 */
 	V4L2_IDENT_ADV7183 = 7183,
 

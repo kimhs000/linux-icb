@@ -938,7 +938,7 @@
 };
 
 &mipi_csi {
-	status = "okay";
+	status = "disabled";
 	ipu_id = <0>;
 	csi_id = <1>;
 	v_channel = <0>;
@@ -950,9 +950,9 @@
 	disp_id = <1>;
 	lcd_panel = "TRULY-WVGA";
 	disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
-	reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
-	reset-delay-us = <50>;
-	status = "okay";
+//	reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
+//	reset-delay-us = <50>;
+	status = "disabled";
 };
 
 &pcie {
