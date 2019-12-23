@@ -19,13 +19,13 @@
 	model = "Naimtechnology i.MX6 Quad ICB Board";
 	compatible = "fsl,imx6q-icb", "fsl,imx6q";
 };
-
+/*
 &battery {
 	offset-charger = <1900>;
 	offset-discharger = <1694>;
 	offset-usb-charger = <1685>;
 };
-
+*/
 &ldb {
 	lvds-channel@0 {
 		crtc = "ipu2-di0";
