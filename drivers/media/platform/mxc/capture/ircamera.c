@@ -1,16 +1,19 @@
 #define DEBUG
 
+#include <linux/module.h>
+#include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/ctype.h>
 #include <linux/types.h>
-#include <linux/clk.h>
-#include <linux/module.h>
-#include <linux/init.h>
-#include <linux/i2c.h>
 #include <linux/delay.h>
+#include <linux/clk.h>
 #include <linux/of_device.h>
+#include <linux/i2c.h>
 #include <linux/of_gpio.h>
 #include <linux/pinctrl/consumer.h>
+#include <linux/regulator/consumer.h>
+#include <linux/fsl_devices.h>
+#include <media/v4l2-chip-ident.h>
 #include "v4l2-int-device.h"
 #include "mxc_v4l2_capture.h"
 
@@ -18,17 +21,6 @@
 
 enum ircamera_frame_rate {
 	ircamera_30_fps
-};
-
-static int ircamera_framerates[] = {
-	[ircamera_30_fps] = 30,
-};
-
-struct ircamera_mode_info {
-	u32 width;
-	u32 height;
-	struct reg_value *init_data_ptr;
-	u32 init_data_size;
 };
 
 static struct sensor_data ircamera_data;
@@ -56,15 +48,6 @@ static struct i2c_driver ircamera_i2c_driver = {
 static void ircamera_reset(void)
 {
 
-}
-
-static int ioctl_g_chip_ident(struct v4l2_int_device *s, int *id)
-{
-	((struct v4l2_dbg_chip_ident *)id)->match.type =
-					V4L2_CHIP_MATCH_I2C_DRIVER;
-	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "hanhwa_ircamera");
-
-	return 0;
 }
 
 static int ioctl_g_ifparm(struct v4l2_int_device *s, struct v4l2_ifparm *p)
@@ -105,6 +88,7 @@ static int ioctl_g_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 		cparm->capability = sensor->streamcap.capability;
 		cparm->timeperframe = sensor->streamcap.timeperframe;
 		cparm->capturemode = sensor->streamcap.capturemode;
+		ret = 0;
 		break;
 
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
@@ -113,21 +97,38 @@ static int ioctl_g_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 	case V4L2_BUF_TYPE_VBI_OUTPUT:
 	case V4L2_BUF_TYPE_SLICED_VBI_CAPTURE:
 	case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
+		ret = -EINVAL;
 		break;
 
 	default:
 		pr_debug("ioctl_g_parm:type is unknown %d\n", a->type);
+		ret = -EINVAL;
 		break;
 	}
 
-	return 0;
+	return ret;
 }
 
 static int ioctl_s_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 {
+	struct v4l2_fract *timeperframe = &a->parm.capture.timeperframe;
+
 	switch (a->type) {
 	/* These are all the possible cases. */
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE:
+		if ((timeperframe->numerator == 0) ||
+		    (timeperframe->denominator == 0)) {
+			timeperframe->denominator = DEFAULT_FPS;
+			timeperframe->numerator = 1;
+		}
+
+		tgt_fps = timeperframe->denominator /
+			  timeperframe->numerator;
+
+		sensor->streamcap.timeperframe = *timeperframe;
+		sensor->streamcap.capturemode =
+				(u32)a->parm.capture.capturemode;
+		break;
 	case V4L2_BUF_TYPE_VIDEO_OUTPUT:
 	case V4L2_BUF_TYPE_VIDEO_OVERLAY:
 	case V4L2_BUF_TYPE_VBI_CAPTURE:
@@ -147,10 +148,11 @@ static int ioctl_s_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 
 static int ioctl_g_fmt_cap(struct v4l2_int_device *s, struct v4l2_format *f)
 {
-struct sensor_data *sensor = s->priv;
+	struct sensor_data *sensor = s->priv;
 
 	f->fmt.pix = sensor->pix;
 	f->fmt.pix.pixelformat =V4L2_PIX_FMT_GREY;
+	pr_debug("%s: %dx%d\n", __func__, sensor->pix.width, sensor->pix.height);
 
 	return 0;
 }
@@ -246,6 +248,8 @@ static int ioctl_enum_framesizes(struct v4l2_int_device *s,
 	if (fsize->index > 1)
 		return -EINVAL;
 
+	fsize->pixel_format = ircamera_data.pix.pixelformat;
+
 	fsize->discrete.width = 640;
 	fsize->discrete.height = 480;
 
@@ -265,9 +269,18 @@ static int ioctl_enum_frameintervals(struct v4l2_int_device *s, struct v4l2_frmi
 
 	fival->type = V4L2_FRMIVAL_TYPE_DISCRETE;
 	fival->discrete.numerator = 1;
-	fival->discrete.denominator = ircamera_framerates[0];;
+	fival->discrete.denominator = 30;
 
 	return -EINVAL;
+}
+
+static int ioctl_g_chip_ident(struct v4l2_int_device *s, int *id)
+{
+	((struct v4l2_dbg_chip_ident *)id)->match.type =
+					V4L2_CHIP_MATCH_I2C_DRIVER;
+	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "hanhwa_ircamera");
+
+	return 0;
 }
 
 static int ioctl_init(struct v4l2_int_device *s)
@@ -288,6 +301,19 @@ static int ioctl_enum_fmt_cap(struct v4l2_int_device *s,
 
 static int ioctl_dev_init(struct v4l2_int_device *s)
 {
+	struct sensor_data *sensor = s->priv;
+	u32 tgt_fps;
+
+	ircamera_data.on = true;
+
+	// Default camera frame rate is set in probe
+	tgt_fps = sensor->streamcap.timeperframe.denominator /
+		  sensor->streamcap.timeperframe.numerator;
+
+	frame_rate = DEFAULT_FPS;
+
+	pr_debug("Initialized ircamera\n");
+
 	return 0;
 }
 
