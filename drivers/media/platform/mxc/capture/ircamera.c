@@ -304,6 +304,7 @@ static int ioctl_dev_init(struct v4l2_int_device *s)
 {
 	struct sensor_data *sensor = s->priv;
 	u32 tgt_fps;
+	enum ircamera_frame_rate frame_rate;
 
 	ircamera_data.on = true;
 
