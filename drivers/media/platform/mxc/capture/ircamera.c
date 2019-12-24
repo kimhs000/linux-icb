@@ -78,6 +78,7 @@ static int ioctl_g_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 {
 	struct sensor_data *sensor = s->priv;
 	struct v4l2_captureparm *cparm = &a->parm.capture;
+	int ret = 0;
 
 	switch (a->type) {
 	/* These are all the possible cases. */
