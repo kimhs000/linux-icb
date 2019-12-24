@@ -114,7 +114,7 @@ static int ioctl_s_parm(struct v4l2_int_device *s, struct v4l2_streamparm *a)
 {
 	struct sensor_data *sensor = s->priv;
 	struct v4l2_fract *timeperframe = &a->parm.capture.timeperframe;
-	u32 tgt_fps
+	u32 tgt_fps;
 
 	switch (a->type) {
 	/* These are all the possible cases. */
