@@ -125,6 +125,9 @@ static int prp_still_start(void *private)
 	}
 
 	memset(&params, 0, sizeof(params));
+	//20191226 KHS//
+	params.csi_mem.csi = cam->csi;
+
 	err = ipu_init_channel(cam->ipu, CSI_MEM, &params);
 	if (err != 0)
 		return err;
