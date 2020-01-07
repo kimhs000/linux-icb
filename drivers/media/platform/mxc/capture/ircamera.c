@@ -50,6 +50,36 @@ static void ircamera_reset(void)
 
 }
 
+static int reg_debug_test(struct i2c_client *client,
+			const struct i2c_device_id *id)
+{
+	int retval,ipu_id;
+	static void *ADDR;
+	volatile u32 *reg;
+	struct device *dev = &client->dev;
+ 
+	retval = of_property_read_u32(dev->of_node, "ipu_id", (u32 *) &ipu_id);
+
+	if (retval) {
+		dev_err(dev, "ipu_id missing or invalid\n");
+		return retval;
+	}
+	else{
+		ADDR = ioremap(0x020E0000, 32);
+		reg= (u32 *)(ADDR+4);
+		pr_info("%s : IOMUXC_GPR1 = 0x%X ",__func__,readl(reg));
+		if(!ipu_id){
+		    *reg= *reg | 1<<19;
+		}
+		else{
+		    *reg= *reg | 1<<20;
+		}
+	}
+
+	return 0;
+
+}
+
 static int ioctl_g_ifparm(struct v4l2_int_device *s, struct v4l2_ifparm *p)
 {
 	if (s == NULL) {
@@ -437,6 +467,8 @@ static int ircamera_probe(struct i2c_client *client,
 	retval = v4l2_int_device_register(&ircamera_int_device);
 
 	clk_disable_unprepare(ircamera_data.sensor_clk);
+
+	reg_debug_test(client, id);
 
 	pr_info("[KHS] camera ircamera driver is loaded\n");
 
