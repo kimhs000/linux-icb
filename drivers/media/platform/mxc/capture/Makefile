@@ -13,7 +13,7 @@ ov5642_camera-objs := ov5642.o
 obj-$(CONFIG_MXC_CAMERA_OV5642) += ov5642_camera.o
 
 hanhwa_ircamera-objs := ircamera.o
-obj-$(CONFIG_MXC_CAMERA_ircamera) += hanhwa_ircamera.o
+obj-$(CONFIG_MXC_CAMERA_ircamera) += ircamera_camera.o
 
 CFLAGS_ircamera.o := -DDEBUG
 CFLAGS_mxc_v4l2_capture.o := -DDEBUG

@@ -36,7 +36,7 @@ static const struct i2c_device_id ircamera_id[] = {
 MODULE_DEVICE_TABLE(i2c, ircamera_id);
 
 static struct i2c_driver ircamera_i2c_driver = {
-	.driver = {
+	.driver = {e
 		  .owner = THIS_MODULE,
 		  .name  = "ircamera",
 		  },
@@ -311,7 +311,7 @@ static int ioctl_g_chip_ident(struct v4l2_int_device *s, int *id)
 {
 	((struct v4l2_dbg_chip_ident *)id)->match.type =
 					V4L2_CHIP_MATCH_I2C_DRIVER;
-	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "hanhwa_ircamera");
+	strcpy(((struct v4l2_dbg_chip_ident *)id)->match.name, "ircamera_camera");
 
 	return 0;
 }
@@ -400,6 +400,7 @@ static struct v4l2_int_device ircamera_int_device = {
 		.slave = &ircamera_slave,
 	},
 };
+
 
 static int ircamera_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
