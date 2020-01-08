@@ -36,7 +36,7 @@ static const struct i2c_device_id ircamera_id[] = {
 MODULE_DEVICE_TABLE(i2c, ircamera_id);
 
 static struct i2c_driver ircamera_i2c_driver = {
-	.driver = {e
+	.driver = {
 		  .owner = THIS_MODULE,
 		  .name  = "ircamera",
 		  },
