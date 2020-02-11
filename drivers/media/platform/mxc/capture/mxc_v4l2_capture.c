@@ -1616,6 +1616,9 @@ static int mxc_v4l_open(struct file *file)
 		return -EBADF;
 	}
 
+	pr_debug("[KHS_DEBUG] cam->sensor = %s, 0x%x\n", cam->sensor, cam->sensor);
+	pr_debug("[KHS_DEBUG] cam->sensor = %s, 0x%x\n", cam->sensor->type, cam->sensor->type);
+	
 	if (cam->sensor == NULL ||
 	    cam->sensor->type != v4l2_int_type_slave) {
 		pr_err("ERROR: v4l2 capture: slave not found!\n");

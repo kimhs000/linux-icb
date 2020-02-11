@@ -91,7 +91,7 @@ static int ioctl_g_ifparm(struct v4l2_int_device *s, struct v4l2_ifparm *p)
 	p->if_type = V4L2_IF_TYPE_BT656;
 	p->u.bt656.mode = V4L2_IF_TYPE_BT656_MODE_NOBT_8BIT;
 	p->u.bt656.bt_sync_correct = 1;  /* Indicate external vsync */
-	p->u.bt656.nobt_vs_inv = 0;
+	p->u.bt656.nobt_vs_inv = 1;
 	p->u.bt656.nobt_hs_inv = 0;
 //	p->u.bt656.nobt_dataen_inv = 1;	
 
