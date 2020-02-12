@@ -435,17 +435,7 @@
 		interrupt-route = <1>;
 	};
 */
-	ircamera: ircamera@0 {
-		compatible = "hanhwa,ircamera";
-		reg = <0x00>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_ipu1_2>;
-//		clocks = <&clks IMX6QDL_CLK_CKO>;
-		clock-names = "csi_mclk";
-		csi_id = <0>;
-		mclk = <12272700>;
-		mclk_source = <0>;
-	};
+
 };
 
 &i2c2 {
@@ -579,6 +569,21 @@
 		compatible = "fsl,imx6-hdmi-i2c";
 		reg = <0x50>;
 	};
+
+
+	ircamera: ircamera@08 {
+		compatible = "hanhwa,ircamera";
+		reg = <0x08>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_ipu1_2>;
+//		clocks = <&clks IMX6QDL_CLK_CKO>;
+		clock-names = "csi_mclk";
+		csi_id = <0>;
+		mclk = <12272700>;
+		mclk_source = <0>;
+	};
+
+
 /*
 	ov564x_mipi: ov564x_mipi@3c { // i2c2 driver //
 		compatible = "ovti,ov564x_mipi";
