@@ -571,9 +571,9 @@
 	};
 
 
-	ircamera: ircamera@08 {
+	ircamera: ircamera@37 {
 		compatible = "hanhwa,ircamera";
-		reg = <0x08>;
+		reg = <0x37>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ipu1_2>;
 //		clocks = <&clks IMX6QDL_CLK_CKO>;
