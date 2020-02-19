@@ -50,6 +50,7 @@ static void ircamera_reset(void)
 
 }
 
+/*
 static int reg_debug_test(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
@@ -79,7 +80,7 @@ static int reg_debug_test(struct i2c_client *client,
 	return 0;
 
 }
-
+*/
 static int ioctl_g_ifparm(struct v4l2_int_device *s, struct v4l2_ifparm *p)
 {
 	if (s == NULL) {
@@ -469,7 +470,7 @@ static int ircamera_probe(struct i2c_client *client,
 
 	clk_disable_unprepare(ircamera_data.sensor_clk);
 
-	reg_debug_test(client, id);
+//	reg_debug_test(client, id);
 
 	pr_info("[KHS] camera ircamera driver is loaded\n");
 
