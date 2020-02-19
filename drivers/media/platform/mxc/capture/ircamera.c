@@ -420,7 +420,7 @@ static int ircamera_probe(struct i2c_client *client,
 	memset(&ircamera_data, 0, sizeof(ircamera_data));
 	ircamera_data.sensor_clk = devm_clk_get(dev, "csi_mclk");
 	if (IS_ERR(ircamera_data.sensor_clk)) {
-		/* assuming clock enabled by default */
+		// assuming clock enabled by default //
 		ircamera_data.sensor_clk = NULL;
 		dev_err(dev, "clock-frequency missing or invalid\n");
 		return PTR_ERR(ircamera_data.sensor_clk);
