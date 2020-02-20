@@ -124,11 +124,36 @@ static struct v4l2_output mxc_capture_outputs[MXC_V4L2_CAPTURE_NUM_OUTPUTS] = {
 	 .std = V4L2_STD_UNKNOWN,
 	 },
 };
-/*
+
 static struct v4l2_input mxc_capture_inputs[MXC_V4L2_CAPTURE_NUM_INPUTS] = {
 	{
 	 .index = 0,
 	 .name = "CSI IC MEM",
+	 .type = V4L2_INPUT_TYPE_CAMERA,
+	 .audioset = 0,
+	 .tuner = 0,
+	 .std = V4L2_STD_UNKNOWN,
+	 .status = 0,
+	 },
+	{
+	 .index = 1,
+	 .name = "CSI MEM",
+	 .type = V4L2_INPUT_TYPE_CAMERA,
+	 .audioset = 0,
+	 .tuner = 0,
+	 .std = V4L2_STD_UNKNOWN,
+	 .status = V4L2_IN_ST_NO_POWER,
+	 },
+};
+/*
+static struct v4l2_input mxc_capture_inputs[MXC_V4L2_CAPTURE_NUM_INPUTS] = {
+	{
+	 .index = 0,
+	#ifdef CONFIG_MXC_CAMERA_ircamera
+	 .name = "CSI MEM",
+	#else
+	 .name = "CSI IC MEM",
+	#endif //CONFIG_MXC_CAMERA_ircamera//
 	 .type = V4L2_INPUT_TYPE_CAMERA,
 	 .audioset = 0,
 	 .tuner = 0,
@@ -146,31 +171,6 @@ static struct v4l2_input mxc_capture_inputs[MXC_V4L2_CAPTURE_NUM_INPUTS] = {
 	 },
 };
 */
-static struct v4l2_input mxc_capture_inputs[MXC_V4L2_CAPTURE_NUM_INPUTS] = {
-	{
-	 .index = 0,
-	#ifdef CONFIG_MXC_CAMERA_ircamera
-	 .name = "CSI MEM",
-	#else
-	 .name = "CSI IC MEM",
-	#endif /*CONFIG_MXC_CAMERA_ircamera*/
-	 .type = V4L2_INPUT_TYPE_CAMERA,
-	 .audioset = 0,
-	 .tuner = 0,
-	 .std = V4L2_STD_UNKNOWN,
-	 .status = 0,
-	 },
-	{
-	 .index = 1,
-	 .name = "CSI MEM",
-	 .type = V4L2_INPUT_TYPE_CAMERA,
-	 .audioset = 0,
-	 .tuner = 0,
-	 .std = V4L2_STD_UNKNOWN,
-	 .status = V4L2_IN_ST_NO_POWER,
-	 },
-};
-
 /*! List of TV input video formats supported. The video formats is corresponding
  * to the v4l2_id in video_fmt_t.
  * Currently, only PAL and NTSC is supported. Needs to be expanded in the
