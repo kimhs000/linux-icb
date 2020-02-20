@@ -260,10 +260,10 @@
 
 	backlight {
 		compatible = "pwm-backlight";
-		pwms = <&pwm1 0 5000000>;
-		brightness-levels = <0 4 8 16 32 64 128 255>;
-		default-brightness-level = <7>;
-		status = "okay";
+//		pwms = <&pwm1 0 5000000>;
+//		brightness-levels = <0 4 8 16 32 64 128 255>;
+//		default-brightness-level = <7>;
+		status = "disabled";
 	};
 
 	v4l2_cap_0 {
@@ -926,12 +926,12 @@
 			>;
 		};
 */
-		pinctrl_pwm1: pwm1grp {
+/*		pinctrl_pwm1: pwm1grp {
 			fsl,pins = <
 				MX6QDL_PAD_SD1_DAT3__PWM1_OUT		0x1b0b1
 			>;
 		};
-
+*/
 		pinctrl_uart1: uart1grp {
 			fsl,pins = <
 				MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	0x1b0b1
@@ -1093,8 +1093,8 @@
 
 &pwm1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm1>;
-	status = "okay";
+//	pinctrl-0 = <&pinctrl_pwm1>;
+	status = "disabled";
 };
 
 &reg_arm {
